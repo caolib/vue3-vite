@@ -42,25 +42,6 @@ onMounted(() => {
 <template>
   <div>
 
-    <el-button @click="()=>{ElMessage({
-        message:'猿身，起洞',
-        type:'error',
-        duration:1000,
-        center:true,
-
-    })}" type="primary" :icon="Edit"></el-button>
-
-    <el-button @click="()=>{
-      ElNotification({
-        title:'错误',
-        message:'出大问题',
-        position:'bottom-right',
-        duration:1500,
-        type:'error'
-      })
-    }" type="primary">起洞
-    </el-button>
-
     <el-input
         v-model="searchParams.category"
         placeholder="Please input"

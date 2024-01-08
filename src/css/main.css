@@ -1,0 +1,6 @@
+body {
+    /*背景图片*/
+    background-image: url('https://dogefs.s3.ladydaily.com/~/source/wallhaven/full/2y/wallhaven-2yoo1m.jpg?w=2560&h=1440&fmt=webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
