@@ -1,7 +1,8 @@
 import request from "@/util/request";
 
-const getAllBookService = function () {
-  return request.get("/book");
+// 分页查询
+const getAllBookService = function (condition) {
+  return request.post("/book", condition);
 };
 
 export { getAllBookService };

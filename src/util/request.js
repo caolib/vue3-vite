@@ -17,12 +17,14 @@ instance.interceptors.response.use(
       });
     }
     //如果code为0，正常返回数据
-    return result.data.data;
+    return result.data;
   },
   //失败回调
   (error) => {
-    // alert('错误');
-    this.$message.error("错误！");
+    ElMessage({
+      message: "发生错误:" + error,
+      type: "error",
+    });
     // 将异步的状态设置为失败状态
     return Promise.reject(error);
   }
