@@ -2,7 +2,7 @@
   <div class="demo-fit">
     <el-menu class="el-menu-demo" mode="horizontal">
       <el-menu-item index="1">
-        <el-avatar shape="square" :size="50" :fit="'cover'" :src="url"/>
+        <el-avatar shape="circle" :size="42" :fit="'cover'" :src="url"/>
       </el-menu-item>
       <el-sub-menu index="2">
         <template #title>Workspace</template>
@@ -16,10 +16,15 @@
           <el-menu-item index="2-4-3">item three</el-menu-item>
         </el-sub-menu>
       </el-sub-menu>
+
       <el-menu-item index="3" disabled>Info</el-menu-item>
-      <el-menu-item index="4">Orders</el-menu-item>
+
       <el-menu-item h="full">
-        <el-button type="primary" @click="toggleDark">切换主题</el-button>
+        <!--深浅色图标-->
+        <el-button @click="toggleDark" id="checkTheme">
+          <el-icon v-if="isDark"><moon/></el-icon>
+          <el-icon v-else><Sunny/></el-icon>
+        </el-button>
       </el-menu-item>
     </el-menu>
   </div>
@@ -35,6 +40,7 @@ const toggleDark = () => {
 
 
 import {ref} from 'vue'
+import {Moon, Sunny, TurnOff} from "@element-plus/icons-vue";
 
 const url = ref('https://pic.imgdb.cn/item/659be939871b83018a2687aa.jpg');
 
