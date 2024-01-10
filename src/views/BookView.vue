@@ -18,7 +18,7 @@ const getAllBooks = async function () {
   const result = await getAllBookService(condition.value);
   tableData.value = result.data;
   total.value = result.total;
-  console.log('tabledata:' + tableData.value);
+  // console.log('tabledata:' + tableData.value);
   loading.value = false;
 };
 
@@ -26,7 +26,7 @@ const getAllBooks = async function () {
 const condition = ref({
   bookName: null,
   author: null,
-  ISBN: null,
+  isbn: null,
   number: 0,
   currentPage: 1,
   pageSize: 7
@@ -74,6 +74,7 @@ book = ref({
 });
 detail = ref(false);
 
+
 </script>
 <!-- ---------------------------------------我是分割线----------------------------------------- -->
 <template>
@@ -84,6 +85,7 @@ detail = ref(false);
         <side-view/>
       </el-aside>
       <el-container>
+
         <el-header>
           <header-view/>
         </el-header>
@@ -104,7 +106,7 @@ detail = ref(false);
                 </el-col>
                 <el-col :span="1"/>
                 <el-col :span="6">
-                  <el-input @blur="getAllBooks" v-model="condition.ISBN" size="large" placeholder="ISBN" clearable/>
+                  <el-input @blur="getAllBooks" v-model="condition.isbn" size="large" placeholder="ISBN" clearable/>
                 </el-col>
               </el-row>
               <br>

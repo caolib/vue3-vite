@@ -1,51 +1,64 @@
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import router from "@/router";
 
 const baseURL = "/api";
 const instance = axios.create({baseURL});
 
-import {useRouter} from "vue-router";
-
-const router = useRouter();
-
-//拦截器，状态码为2xx时执行成功回调，否则执行失败回调
+//响应拦截器，状态码为2xx时执行成功回调，否则执行失败回调
 instance.interceptors.response.use(
     //成功回调
     (result) => {
-        //失败，抛出错误信息
-        if (result.data.code === 0) {
-            ElMessage({
-                message: "发生错误:" + result.data.msg,
-                type: "error",
-            });
-        }
-
         return result.data;
     },
-    //失败回调 todo 路由跳转待实现
+    //失败回调
     (error) => {
-        let stat = error.response.status;
-        console.log('stat:'+stat);
-        if (stat === 401) {
-            ElMessage({message: error+' 未登录！', type: "error",});
-            router.push("/login");
-        } else if (stat === 419) {
-            ElMessage({
-                message: error+"身份已过期！",
-                type: "error",
-            });
-            localStorage.removeItem("token");
-            router.push('/login');
-        } else {
-            this.$message.error("未知错误!");
+        // 状态码为401,419都跳转到登录界面
+        if (error.response) {
+            const code = error.response.status;
+            if (code === 401) {
+                ElMessage({message: '请先登录！', type: "error",});
+                router.push('/login');
+            } else if (code === 419) {
+                ElMessage({
+                    message: "身份已过期,请重新登录！",
+                    type: "error",
+                });
+                router.push('/login');
+            } else {
+                ElMessage({
+                    message: "未知错误:" + error.response.message,
+                    type: "error",
+                });
+            }
         }
-        ElMessage({
-            message: "发生错误:" + error,
-            type: "error",
-        });
-
         // 将异步的状态设置为失败状态
         return Promise.reject(error);
+    }
+);
+
+// 请求拦截器
+instance.interceptors.request.use(
+    (config) => {
+        //登录请求不需要token
+        if (config.url.endsWith('/login')) {
+            return config;
+        }
+        const token = localStorage.getItem('token');
+        console.log('token:' + token);
+        if (token != null) {
+            axios.defaults.headers.common['token'] = localStorage.getItem('token');
+            console.log('666:' + axios.defaults.headers.common['token'])
+        } else {
+            ElMessage({message: '请先登录！', type: "error",});
+            router.push('/login');
+            return Promise.reject('token不存在！');
+        }
+        return config;
+    },
+    (err) => {
+        //请求错误的回调
+        return Promise.reject(err);
     }
 );
 
