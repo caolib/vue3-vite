@@ -40,7 +40,7 @@ const toggleDark = () => {
 
 
 import {ref} from 'vue'
-import {Moon, Sunny, TurnOff} from "@element-plus/icons-vue";
+import {Moon, Sunny} from "@element-plus/icons-vue";
 
 const url = ref('https://pic.imgdb.cn/item/659be939871b83018a2687aa.jpg');
 

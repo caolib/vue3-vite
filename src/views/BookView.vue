@@ -113,7 +113,6 @@ detail = ref(false);
               <el-table
                   :data="tableData"
                   style="width: 100%"
-                  :table-layout='"auto"'
                   v-loading="loading">
                 <el-table-column prop="title" label="书名" width="150"/>
                 <el-table-column prop="author" label="作者" width="150"/>
