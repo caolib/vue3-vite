@@ -5,6 +5,11 @@ import router from "@/router";
 const baseURL = "/api";
 const instance = axios.create({baseURL});
 
+import {useTokenStore} from "@/stores/token.js";
+
+const tokenStore = useTokenStore();
+
+
 //响应拦截器，状态码为2xx时执行成功回调，否则执行失败回调
 instance.interceptors.response.use(
     //成功回调
@@ -20,16 +25,10 @@ instance.interceptors.response.use(
                 ElMessage({message: '请先登录！', type: "error",});
                 router.push('/login');
             } else if (code === 419) {
-                ElMessage({
-                    message: "身份已过期,请重新登录！",
-                    type: "error",
-                });
+                ElMessage.error("身份已过期,请重新登录！");
                 router.push('/login');
             } else {
-                ElMessage({
-                    message: "未知错误:" + error.response.message,
-                    type: "error",
-                });
+                ElMessage.error("未知错误:" + error.response.message);
             }
         }
         // 将异步的状态设置为失败状态
@@ -44,14 +43,13 @@ instance.interceptors.request.use(
         if (config.url.endsWith('/login')) {
             return config;
         }
-        const token = localStorage.getItem('token');
-        console.log('token:' + token);
+        //如果有token，将token放入请求头中
+        const token = tokenStore.token;
         if (token != null) {
-            axios.defaults.headers.common['token'] = localStorage.getItem('token');
-            console.log('666:' + axios.defaults.headers.common['token'])
+            config.headers['token'] = token;
         } else {
-            ElMessage({message: '请先登录！', type: "error",});
             router.push('/login');
+            ElMessage({message: '请先登录！', type: "error",});
             return Promise.reject('token不存在！');
         }
         return config;

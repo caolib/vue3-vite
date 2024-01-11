@@ -1,3 +1,29 @@
+<script setup>
+
+import {useDark} from "@vueuse/core";
+
+const isDark = useDark();
+// 切换深浅色
+const toggleDark = () => {
+  isDark.value = !isDark.value
+}
+
+// 头像下拉菜单命令
+const handleCommand = function (command) {
+  if (command === 'logout') {
+    // localStorage.removeItem("token");
+    router.push('/login');
+  }
+};
+
+import {ref} from 'vue'
+import {Moon, Sunny} from "@element-plus/icons-vue";
+import router from "@/router/index.js";
+
+const url = ref('https://pic.imgdb.cn/item/659be939871b83018a2687aa.jpg');
+
+</script>
+
 <template>
   <div class="demo-fit header-view">
     <el-menu mode="horizontal">
@@ -5,7 +31,7 @@
       <!--头像-->
       <el-dropdown @command="handleCommand">
         <el-menu-item index="1">
-          <el-avatar @click="showMe" shape="circle" :size="42" :fit="'cover'" :src="url"/>
+          <el-avatar @click="()=>{router.push('/reader')}" shape="circle" :size="42" :fit="'cover'" :src="url"/>
         </el-menu-item>
         <template #dropdown>
           <el-dropdown-menu>
@@ -37,33 +63,5 @@
     </el-menu>
   </div>
 </template>
-<script setup>
 
-import {useDark} from "@vueuse/core";
-
-const isDark = useDark();
-// 切换深浅色
-const toggleDark = () => {
-  isDark.value = !isDark.value
-}
-
-// 头像下拉菜单命令
-const handleCommand = function (command) {
-  if (command === 'logout') {
-    // localStorage.removeItem("token");
-    router.push('/login');
-  }
-};
-
-const props = defineProps({
-  returnReader: Object
-});
-
-import {ref} from 'vue'
-import {Moon, Sunny} from "@element-plus/icons-vue";
-import router from "@/router/index.js";
-
-const url = ref('https://pic.imgdb.cn/item/659be939871b83018a2687aa.jpg');
-
-</script>
 

@@ -6,17 +6,24 @@ import router from '@/router'
 import ElementPlus from "element-plus";
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
+import {createPersistedState} from "pinia-persistedstate-plugin";
+
 import '@/css/main.css';
-import axios from "axios";
+import {createPinia} from "pinia";
 
-axios.defaults.headers.common['token'] = localStorage.getItem('token');
 
+
+// 导入element-plus中文语言
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-
 const app = createApp(App)
+
+const pinia = createPinia();
+const persist = createPersistedState();
+pinia.use(persist);
 
 app.use(ElementPlus, {locale: zhCn,});
 app.use(router);
+app.use(pinia);
 
 app.mount('#app')
 

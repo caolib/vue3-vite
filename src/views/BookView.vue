@@ -4,6 +4,11 @@ import {getAllBookService} from "@/methods/book.js";
 import SideView from "@/components/SideView.vue";
 import HeaderView from "@/components/HeaderView.vue";
 import {Search} from "@element-plus/icons-vue";
+import {ElMessage} from "element-plus";
+import {useReaderStore} from "@/stores/reader.js";
+import {borrowService} from "@/methods/borrow.js";
+const readerStore = useReaderStore();
+
 
 const tableData = ref([]);
 
@@ -54,8 +59,8 @@ const handleCurrentChange = (val) => {
   loading.value = false;
 };
 
-let detail;
-let book;
+let detail = ref(false);
+
 // 显示当前书籍详细信息
 const showDetail = (row) => {
   detail.value = true;
@@ -64,7 +69,8 @@ const showDetail = (row) => {
   console.log(row);
 }
 
-book = ref({
+//书籍信息
+let book = ref({
   title: null,
   isbn: null,
   cover: null,
@@ -72,8 +78,25 @@ book = ref({
   number: 0,
   author: null
 });
-detail = ref(false);
 
+// 归还日期，默认为借阅7天
+const dueDate = ref(new Date());
+dueDate.value.setDate(dueDate.value.getDate() + 7);
+
+let showDrawer = ref(false);
+
+//显示抽屉
+const showBorrow = (row)=>{
+  showDrawer.value = true;
+  book.value = row;
+}
+
+//借阅
+const borrow = () => {
+  borrowService(book.value.isbn, readerStore.reader.id,dueDate.value);
+  ElMessage.success("借阅成功");
+  showDrawer.value = false;
+}
 
 </script>
 <!-- ---------------------------------------我是分割线----------------------------------------- -->
@@ -85,11 +108,9 @@ detail = ref(false);
         <side-view/>
       </el-aside>
       <el-container>
-
         <el-header>
           <header-view/>
         </el-header>
-
         <el-main>
           <el-row>
             <el-col :span="24">
@@ -126,15 +147,37 @@ detail = ref(false);
                     <el-button link type="primary" size="small"
                                @click="showDetail(scope.row)">详细信息
                     </el-button>
-                    <el-button link
-                               type="primary"
-                               size="small"
-                               :disabled="scope.row.number === 0"
-                    >借阅</el-button>
+                    <el-button link type="primary" size="small"
+                               @click="showBorrow(scope.row)"
+                               :disabled="scope.row.number === 0">借阅
+                    </el-button>
                   </template>
                 </el-table-column>
-
               </el-table>
+
+              <!--借阅图书信息抽屉-->
+              <el-drawer v-model="showDrawer">
+                <template #header>
+                  <h1>借阅</h1>
+                </template>
+                <el-image style="width: 100px; height: 150px" :src="book.cover" :fit="'fill'"/>
+                <div class="block">
+                  <el-date-picker
+                      v-model="dueDate"
+                      type="datetime"
+                      placeholder="选择归还日期"
+                      format="YYYY-MM-DD"
+                      date-format="MMM DD, YYYY"
+                      time-format="HH:mm"/>
+                </div>
+                <template #footer>
+                  <div style="flex: auto">
+                    <el-button>取消</el-button>
+                    <el-button type="primary" @click="borrow">提交</el-button>
+                  </div>
+                </template>
+              </el-drawer>
+
               <br>
 
               <!--分页组件-->

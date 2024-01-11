@@ -1,24 +1,28 @@
-<script lang="ts" setup>
+<script setup>
 import {onMounted, reactive, ref} from 'vue'
-import type {FormInstance, FormRules} from 'element-plus'
 import {loginService} from "@/methods/login";
 import axios from "axios";
 import router from '@/router';
-import HeaderView from "@/components/HeaderView.vue";
+import {useTokenStore} from "@/stores/token";
+import {useReaderStore} from "@/stores/reader.js";
+
+const readerStore = useReaderStore();
+const tokenStore = useTokenStore();
 
 
-const ruleFormRef = ref<FormInstance>()
+const ruleFormRef = ref()
 
 onMounted(() => {
-  console.log('mounted')
-})
+  tokenStore.setToken(returnReader.token);
 
+})
 
 const reader = ref({
   username: '',
   password: '',
 });
 
+// 返回的用户信息
 let returnReader = reactive({
   id: '',
   username: '',
@@ -29,7 +33,7 @@ let returnReader = reactive({
   token: ''
 });
 
-const rules = reactive<FormRules<typeof reader>>({
+const rules = reactive({
   // pass: [{ validator: validatePass, trigger: 'blur' }],
   // checkPass: [{ validator: validatePass2, trigger: 'blur' }],
   // age: [{ validator: checkAge, trigger: 'blur' }],
@@ -43,17 +47,19 @@ const login = async function () {
   if (result.data.code === 0) {
     await router.push('/login');
   } else {
-    //将token保存到浏览器本地存储
-    console.log("returntoken:" + returnReader.token);
-    localStorage.setItem("token", returnReader.token);
+    //用户信息保存
+    readerStore.setReader(returnReader);
+    //token保存
+    tokenStore.setToken(returnReader.token);
+    console.log('tokenStore:' + tokenStore.token);
     //在axios请求头中带上token
     axios.defaults.headers.common["token"] = returnReader.token;
-    console.log(axios.defaults.headers.common["token"]);
     await router.push('/book');
   }
 };
 
-const submitForm = (formEl: FormInstance | undefined) => {
+// 提交表单
+const submitForm = (formEl) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
@@ -66,8 +72,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
   })
 }
 
+let status = ref(1);
 
-const resetForm = (formEl: FormInstance | undefined) => {
+const resetForm = (formEl) => {
   if (!formEl)
     return
   formEl.resetFields()
@@ -76,40 +83,57 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
 <template>
 
-  <header-view :returnReader="returnReader"/>
-
   <el-form
+      v-if="status===1"
       ref="ruleFormRef"
       :model="reader"
       status-icon
       :rules="rules"
       label-width="120px"
-      class="demo-ruleForm">
+      class="centered-form"
+      title="登录">
+
     <!--用户名-->
-    <el-form-item label="用户名" prop="username">
+    <el-form-item label="用户名" prop="username" class="form-row">
       <el-input v-model="reader.username"/>
     </el-form-item>
 
     <!--密码-->
-    <el-form-item label="密码" prop="password">
+    <el-form-item label="密码" prop="password" class="form-row">
       <el-input v-model.number="reader.password" type="password"/>
     </el-form-item>
 
-    <el-form-item>
-      <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
-      <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-    </el-form-item>
+    <div class="button-row">
+      <el-form-item>
+        <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
+        <el-button type="success" @click="resetForm(ruleFormRef)">注册</el-button>
+      </el-form-item>
+    </div>
   </el-form>
+
 </template>
 
 <!--todo 显示用户信息-->
 
 <style scoped>
-.header-view {
-  opacity: 0; /* 设置透明度为0，即完全透明 */
-  width: 0; /* 设置宽度为0，即最小宽度 */
-  height: 0; /* 设置高度为0，即最小高度 */
-  overflow: hidden; /* 隐藏超出边界的内容 */
+.centered-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  margin: 0 auto;
+  flex-direction: column;
+}
+
+.form-row {
+  width: 100%;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 </style>
 

@@ -39,3 +39,11 @@ body::after {
     border-bottom-left-radius: 10px;
     overflow: hidden;
 }
+
+.el-header {
+    height: 550px; /* 调整为所需的高度 */
+}
+
+.el-aside {
+    height: 550px; /* 调整为所需的高度 */
+}

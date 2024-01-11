@@ -18,7 +18,16 @@ const router = createRouter({
             name: "login",
             component: () => import("../views/LoginView.vue"),
         },
-
+        {
+            path: "/reader",
+            name: "reader",
+            component: () => import("../views/UserView.vue"),
+        },
+        {
+            path: "/borrow",
+            name: "borrow",
+            component: () => import("../views/BorrowView.vue"),
+        },
     ],
 });
 
