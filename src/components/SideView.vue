@@ -14,13 +14,13 @@
       </el-icon>
       <span>个人信息</span>
     </el-menu-item>
-    <el-menu-item index="2" @click="router.push('/borrow')">
+    <el-menu-item index="3" @click="router.push('/borrow')">
       <el-icon>
         <search/>
       </el-icon>
       <span>借阅信息</span>
     </el-menu-item>
-    <el-menu-item index="3" @click="logout">
+    <el-menu-item index="4" @click="logout">
       <el-icon>
         <switch-button></switch-button>
       </el-icon>

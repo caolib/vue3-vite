@@ -7,6 +7,7 @@ import {Search} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
 import {useReaderStore} from "@/stores/reader.js";
 import {borrowService} from "@/methods/borrow.js";
+
 const readerStore = useReaderStore();
 
 
@@ -23,7 +24,6 @@ const getAllBooks = async function () {
   const result = await getAllBookService(condition.value);
   tableData.value = result.data;
   total.value = result.total;
-  // console.log('tabledata:' + tableData.value);
   loading.value = false;
 };
 
@@ -79,23 +79,24 @@ let book = ref({
   author: null
 });
 
-// 归还日期，默认为借阅7天
+// 应该归还日期，默认为借阅7天
 const dueDate = ref(new Date());
 dueDate.value.setDate(dueDate.value.getDate() + 7);
-
 let showDrawer = ref(false);
 
 //显示抽屉
-const showBorrow = (row)=>{
+const showBorrow = (row) => {
   showDrawer.value = true;
   book.value = row;
 }
 
 //借阅
-const borrow = () => {
-  borrowService(book.value.isbn, readerStore.reader.id,dueDate.value);
+const borrow = async () => {
+  await borrowService(book.value.isbn, readerStore.reader.id, dueDate.value);
   ElMessage.success("借阅成功");
   showDrawer.value = false;
+  //刷新表格
+  await getAllBooks();
 }
 
 </script>

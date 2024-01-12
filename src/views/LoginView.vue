@@ -113,8 +113,6 @@ const resetForm = (formEl) => {
 
 </template>
 
-<!--todo 显示用户信息-->
-
 <style scoped>
 .centered-form {
   display: flex;

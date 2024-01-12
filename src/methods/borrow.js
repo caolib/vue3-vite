@@ -1,9 +1,4 @@
 import request from "@/util/request";
-// const updateReaderService = function (reader) {
-//     return request.post('/reader/update',reader);
-// };
-//
-// export {updateReaderService};
 
 // 查询个人的借书记录
 const getBorrowByReaderIdService = function (id) {
@@ -22,5 +17,39 @@ const borrowService = function (isbn, readerId, dueDate) {
         }
     });
 };
+// 还书
+const returnBookService = function (id, isbn) {
+    console.log(id);
+    return request.get('/borrow/returnBook', {
+        params: {
+            id: id,
+            isbn: isbn
+        }
+    });
+};
 
-export {getBorrowByReaderIdService,borrowService};
+// 删除借书记录
+const deleteByIdService = function (id) {
+    return request.delete('/borrow', {
+        params: {id: id},
+    });
+};
+
+// 批量删除借阅记录
+// const deleteBorrowBatchService = function (ids) {
+//     return request.delete('/borrow/batch', {
+//         params: {ids: JSON.stringify(ids)},
+//     });
+// };
+
+const deleteBorrowBatchService = function (ids) {
+    return request.post('/borrow/batch', ids);
+};
+
+export {
+    getBorrowByReaderIdService,
+    borrowService,
+    returnBookService,
+    deleteByIdService,
+    deleteBorrowBatchService
+};
