@@ -1,6 +1,11 @@
 <script setup>
 
 import {useDark} from "@vueuse/core";
+import {useReaderStore} from "@/stores/reader.js";
+import {useTokenStore} from "@/stores/token.js";
+
+const readerStore = useReaderStore();
+const tokenStore = useTokenStore();
 
 const isDark = useDark();
 // 切换深浅色
@@ -11,7 +16,9 @@ const toggleDark = () => {
 // 头像下拉菜单命令
 const handleCommand = function (command) {
   if (command === 'logout') {
-    // localStorage.removeItem("token");
+    // 退出后清除token和reader信息
+    tokenStore.setToken(null);
+    readerStore.setReader(null);
     router.push('/login');
   }
 };
@@ -31,7 +38,7 @@ const url = ref('https://pic.imgdb.cn/item/659be939871b83018a2687aa.jpg');
       <!--头像-->
       <el-dropdown @command="handleCommand">
         <el-menu-item index="1">
-          <el-avatar @click="()=>{router.push('/reader')}" shape="circle" :size="42" :fit="'cover'" :src="url"/>
+          <el-avatar @click="router.push('/reader')" shape="circle" :size="42" :fit="'cover'" :src="url"/>
         </el-menu-item>
         <template #dropdown>
           <el-dropdown-menu>
@@ -40,18 +47,10 @@ const url = ref('https://pic.imgdb.cn/item/659be939871b83018a2687aa.jpg');
         </template>
       </el-dropdown>
 
-      <!--<el-sub-menu index="2">-->
-      <!--  <template #title>Workspace</template>-->
-      <!--  <el-menu-item index="2-1">item one</el-menu-item>-->
-      <!--  <el-menu-item index="2-2">item two</el-menu-item>-->
-      <!--  <el-menu-item index="2-3">item three</el-menu-item>-->
-      <!--  <el-sub-menu index="2-4">-->
-      <!--    <template #title>item four</template>-->
-      <!--    <el-menu-item index="2-4-1">item one</el-menu-item>-->
-      <!--    <el-menu-item index="2-4-2">item two</el-menu-item>-->
-      <!--    <el-menu-item index="2-4-3">item three</el-menu-item>-->
-      <!--  </el-sub-menu>-->
-      <!--</el-sub-menu>-->
+      <!--昵称标签-->
+      <el-menu-item h="full">
+        <el-tag type="success" size="large" round>{{readerStore.reader.nickname}}</el-tag>
+      </el-menu-item>
 
       <!--深浅色图标-->
       <el-menu-item h="full">

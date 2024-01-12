@@ -1,45 +1,50 @@
 <template>
-  <el-menu
-      default-active="1"
-      class="el-menu-vertical-demo">
+  <el-menu v-model="activeIndex" class="el-menu-vertical-demo">
     <el-menu-item index="1" @click="router.push('/book')">
-      <el-icon>
-        <icon-menu/>
-      </el-icon>
-      <span>图书信息查询</span>
-    </el-menu-item>
-    <el-menu-item index="2" @click="router.push('/reader')">
-      <el-icon>
-        <setting/>
-      </el-icon>
-      <span>个人信息</span>
-    </el-menu-item>
-    <el-menu-item index="3" @click="router.push('/borrow')">
       <el-icon>
         <search/>
       </el-icon>
-      <span>借阅信息</span>
+      <el-button link :type="'primary'">图书信息查询</el-button>
     </el-menu-item>
+
+    <el-menu-item index="2" @click="router.push('/borrow')">
+      <el-icon>
+        <search/>
+      </el-icon>
+      <el-button link :type="'primary'">借阅记录</el-button>
+    </el-menu-item>
+
+    <el-menu-item index="3" @click="router.push('/reader')">
+      <el-icon>
+        <setting/>
+      </el-icon>
+      <el-button link :type="'primary'">个人信息</el-button>
+    </el-menu-item>
+
     <el-menu-item index="4" @click="logout">
       <el-icon>
         <switch-button></switch-button>
       </el-icon>
-      <span>退出登录</span>
+      <el-button link :type="'danger'">退出登录</el-button>
     </el-menu-item>
+
   </el-menu>
 </template>
 
 <script lang="ts" setup>
 import {
   Search,
-  Search as IconMenu,
-  Setting, SwitchButton,
+  Setting,
+  SwitchButton,
 } from '@element-plus/icons-vue'
+
+import {ref} from 'vue';
+
+const activeIndex = ref('1');
 
 import {useRouter} from "vue-router";
 import {useTokenStore} from "@/stores/token";
 import {useReaderStore} from "@/stores/reader";
-
 
 const tokenStore = useTokenStore();
 const readerStore = useReaderStore();

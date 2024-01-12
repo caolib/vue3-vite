@@ -16,20 +16,19 @@ body::after {
     z-index: -1;
 }
 
-.el-table {
-    opacity: 0.7;
-}
-
 #checkTheme {
     background-color: rgba(0, 0, 0, 0);
 }
 
 .el-table {
-    border-radius: 10px; /* 设置圆角的半径 */
+    opacity: 0.7;
+    border-radius: 10px; /* 圆角半径 */
     overflow: hidden; /* 隐藏超出边界的内容 */
+    box-shadow:  10px 10px 10px rgba(0, 0, 0, 0.5);
 }
 
 .el-header {
+    height: 550px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     overflow: hidden;
@@ -38,12 +37,10 @@ body::after {
 .el-aside {
     border-bottom-left-radius: 10px;
     overflow: hidden;
+    height: 550px;
 }
 
-.el-header {
-    height: 550px; /* 调整为所需的高度 */
-}
 
-.el-aside {
-    height: 550px; /* 调整为所需的高度 */
+.el-dialog {
+    border-radius: 20px;
 }

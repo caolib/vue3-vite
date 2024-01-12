@@ -14,6 +14,10 @@ const tokenStore = useTokenStore();
 instance.interceptors.response.use(
     //成功回调
     (result) => {
+        if(result.data.code===0){
+            ElMessage.error(result.data.msg);
+            return Promise.reject(result);
+        }
         return result.data;
     },
     //失败回调

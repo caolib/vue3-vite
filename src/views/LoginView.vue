@@ -5,6 +5,7 @@ import axios from "axios";
 import router from '@/router';
 import {useTokenStore} from "@/stores/token";
 import {useReaderStore} from "@/stores/reader.js";
+import {ElNotification} from "element-plus";
 
 const readerStore = useReaderStore();
 const tokenStore = useTokenStore();
@@ -14,7 +15,6 @@ const ruleFormRef = ref()
 
 onMounted(() => {
   tokenStore.setToken(returnReader.token);
-
 })
 
 const reader = ref({
@@ -55,6 +55,11 @@ const login = async function () {
     //在axios请求头中带上token
     axios.defaults.headers.common["token"] = returnReader.token;
     await router.push('/book');
+    ElNotification.success({
+      title: '登录成功',
+      message: 'Hello,' + returnReader.nickname,
+      duration: 2000
+    });
   }
 };
 

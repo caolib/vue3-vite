@@ -10,7 +10,7 @@ import {ref, onMounted} from "vue";
 import HeaderView from "@/components/HeaderView.vue";
 import SideView from "@/components/SideView.vue";
 import {ElMessage} from "element-plus";
-import {Delete, Search} from "@element-plus/icons-vue";
+import {Delete} from "@element-plus/icons-vue";
 
 const readerStore = useReaderStore();
 const tableData = ref([]);
@@ -77,6 +77,7 @@ const deleteBorrowBatch = async () => {
   }
   await deleteBorrowBatchService(ids.value);
   ElMessage.success('批量删除成功！');
+  await getBorrowByReaderId();
 }
 
 </script>
@@ -95,8 +96,8 @@ const deleteBorrowBatch = async () => {
           <div style="display: flex; justify-content: space-between;">
             <el-button-group>
               <el-button @click="flushStatus('all')">全部</el-button>
-              <el-button @click="flushStatus('returned')">已归还</el-button>
-              <el-button @click="flushStatus('notReturned')">未归还</el-button>
+              <el-button @click="flushStatus('returned')" type="success">已归还</el-button>
+              <el-button @click="flushStatus('notReturned')" type="danger">未归还</el-button>
             </el-button-group>
             <!--批量删除按钮-->
             <el-button @click="deleteBorrowBatch" type="danger" :icon="Delete"/>
@@ -124,7 +125,8 @@ const deleteBorrowBatch = async () => {
 
                 <el-table-column label="操作" width="180">
                   <template #default="scope">
-                    <el-button link @click="returnBook(scope.row.id,scope.row.isbn)" type="primary" size="small"
+                    <el-button link @click="returnBook(scope.row.id,scope.row.isbn)"
+                               type="primary" size="small"
                                :disabled="scope.row.status">
                       归还
                     </el-button>

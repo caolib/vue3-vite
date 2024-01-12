@@ -35,13 +35,7 @@ const deleteByIdService = function (id) {
     });
 };
 
-// 批量删除借阅记录
-// const deleteBorrowBatchService = function (ids) {
-//     return request.delete('/borrow/batch', {
-//         params: {ids: JSON.stringify(ids)},
-//     });
-// };
-
+//批量删除借阅记录
 const deleteBorrowBatchService = function (ids) {
     return request.post('/borrow/batch', ids);
 };

@@ -34,7 +34,7 @@ const condition = ref({
   isbn: null,
   number: 0,
   currentPage: 1,
-  pageSize: 7
+  pageSize: 8
 });
 
 // 是否加载中
@@ -79,9 +79,8 @@ let book = ref({
   author: null
 });
 
-// 应该归还日期，默认为借阅7天
+// 应该归还的日期
 const dueDate = ref(new Date());
-dueDate.value.setDate(dueDate.value.getDate() + 7);
 let showDrawer = ref(false);
 
 //显示抽屉
@@ -120,11 +119,11 @@ const borrow = async () => {
                 <el-button @click="getAllBooks" :icon="Search" size="large" type="success" circle :span="2"/>
                 <el-col :span="1"/>
                 <el-col :span="6">
-                  <el-input @blur="getAllBooks" v-model="condition.bookName" size="large" placeholder="书名" clearable/>
+                  <el-input @input="getAllBooks" v-model="condition.bookName" size="large" placeholder="书名" clearable/>
                 </el-col>
                 <el-col :span="1"/>
                 <el-col :span="6">
-                  <el-input @blur="getAllBooks" v-model="condition.author" size="large" placeholder="作者" clearable/>
+                  <el-input @input="getAllBooks" v-model="condition.author" size="large" placeholder="作者" clearable/>
                 </el-col>
                 <el-col :span="1"/>
                 <el-col :span="6">
@@ -186,7 +185,7 @@ const borrow = async () => {
                 <el-pagination
                     v-model:current-page="condition.currentPage"
                     v-model:page-size="condition.pageSize"
-                    :page-sizes="[5,7,10, 15, 30,50,100]"
+                    :page-sizes="[5,8,10, 15, 30,50,100]"
                     :background="true"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total"
