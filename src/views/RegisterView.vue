@@ -2,7 +2,11 @@
 import {ref} from 'vue'
 import router from '@/router';
 import {ElMessage} from "element-plus";
-import {registerService} from "@/methods/register.js";
+import {adminRegisterService, registerService} from "@/methods/register.js";
+
+
+const isAdmin = ref(false)
+
 
 // 注册表单
 const registerForm = ref({
@@ -36,11 +40,19 @@ const rules = {
 }
 
 // 注册
-const register = async (registerForm) => {
-  await registerService(registerForm);
+const register = async () => {
+  console.log(registerForm.value);
+
+  if(isAdmin.value){
+    adminForm.value.username = registerForm.value.username;
+    adminForm.value.password = registerForm.value.password;
+    adminForm.value.nickname = registerForm.value.nickname;
+    await adminRegisterService(adminForm.value);
+  }else{
+    await registerService(registerForm.value);
+  }
 
   await router.push('/login');
-
   ElMessage.success({
     message: '注册成功,现在可以登录了！',
     duration: 2000
@@ -48,6 +60,13 @@ const register = async (registerForm) => {
 }
 
 let isMan = ref(true);
+
+// 管理员注册信息
+const adminForm = ref({
+  username: '',
+  password: '',
+  nickname: '',
+});
 
 </script>
 
@@ -64,7 +83,7 @@ let isMan = ref(true);
       <el-input v-model.number="registerForm.password" type="password" show-password/>
     </el-form-item>
     <!--电话-->
-    <el-form-item label="电话" prop="tel" class="form-row" required>
+    <el-form-item v-if="!isAdmin" label="电话" prop="tel" class="form-row" required>
       <el-input v-model.number="registerForm.tel"/>
     </el-form-item>
     <!--昵称-->
@@ -72,24 +91,28 @@ let isMan = ref(true);
       <el-input v-model.number="registerForm.nickname"/>
     </el-form-item>
     <!--年龄-->
-    <el-form-item label="年龄" prop="age" class="form-row">
+    <el-form-item v-if="!isAdmin" label="年龄" prop="age" class="form-row">
       <el-input v-model.number="registerForm.age"/>
     </el-form-item>
     <!--性别-->
     <el-form-item prop="gender" class="form-row">
+      <el-switch v-if="!isAdmin" class="mb-2" style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+                 v-model="isMan" active-text="男" inactive-text="女" inline-prompt
+                 @change="registerForm.gender = isMan ? '男' : '女'" size="large"/>
+
       <el-switch
-          v-model="isMan"
+          v-model="isAdmin"
           class="mb-2"
-          style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-          active-text="男"
-          inactive-text="女"
-          @change="registerForm.gender = isMan ? '男' : '女'"
-      />
+          style="--el-switch-on-color: #13ce66; --el-switch-off-color: #fd8250"
+          inline-prompt
+          active-text="管理员"
+          inactive-text="读者"
+          size="large"/>
     </el-form-item>
 
     <div class="button-row">
       <el-form-item>
-        <el-button type="primary" @click="register(registerForm)">注册</el-button>
+        <el-button type="primary" @click="register">注册</el-button>
         <el-button type="success" @click="router.push('/login')">返回</el-button>
       </el-form-item>
     </div>
@@ -117,5 +140,6 @@ let isMan = ref(true);
   justify-content: space-between;
   width: 100%;
 }
+
 </style>
 

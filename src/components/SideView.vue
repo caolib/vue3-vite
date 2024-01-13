@@ -23,7 +23,7 @@
 
     <el-menu-item index="4" @click="logout">
       <el-icon>
-        <switch-button></switch-button>
+        <switch-button/>
       </el-icon>
       <el-button link :type="'danger'">退出登录</el-button>
     </el-menu-item>

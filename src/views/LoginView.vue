@@ -13,7 +13,6 @@ const tokenStore = useTokenStore();
 
 const ruleFormRef = ref()
 
-
 // 表单校验规则
 const rules = {
   username: [
@@ -126,9 +125,7 @@ let isAdmin = ref(false);
           style="--el-switch-on-color: #13ce66; --el-switch-off-color: #fd8250"
           inline-prompt
           active-text="管理员"
-          inactive-text="读者"
-          @change="ElMessage.success(isAdmin? '管理员' : '读者')"/>
-
+          inactive-text="读者"/>
     </div>
 
   </el-form>

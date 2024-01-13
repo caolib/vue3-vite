@@ -44,7 +44,7 @@ instance.interceptors.response.use(
 instance.interceptors.request.use(
     (config) => {
         //登录请求不需要token
-        if (config.url.endsWith('/login')) {
+        if (config.url.endsWith('/login')||config.url.endsWith('/register')) {
             return config;
         }
         //如果有token，将token放入请求头中
