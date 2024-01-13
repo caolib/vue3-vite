@@ -24,7 +24,7 @@ export default defineConfig({
     },
     //代理http请求，解决跨域问题
     server: {
-        host: '192.168.0.66',
+        // host: '192.168.0.66',
         port: 5173,
         proxy: {
             '/api': { //匹配请求路径中含有 /api 的请求

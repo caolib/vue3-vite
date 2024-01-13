@@ -14,7 +14,7 @@
       <el-button link :type="'primary'">借阅记录</el-button>
     </el-menu-item>
 
-    <el-menu-item index="3" @click="router.push('/reader')">
+    <el-menu-item index="3" @click="router.push('/user')">
       <el-icon>
         <setting/>
       </el-icon>
@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts" setup>
+
 import {
   Search,
   Setting,
@@ -45,16 +46,19 @@ const activeIndex = ref('1');
 import {useRouter} from "vue-router";
 import {useTokenStore} from "@/stores/token";
 import {useReaderStore} from "@/stores/reader";
+import {useAdminStore} from "@/stores/admin";
 
+const adminStore = useAdminStore();
 const tokenStore = useTokenStore();
 const readerStore = useReaderStore();
 
 const router = useRouter();
 
 const logout = () => {
-  // 退出后清除token和reader信息
+  // 退出后清除token、reader和admin信息
   tokenStore.setToken(null);
   readerStore.setReader(null);
+  adminStore.setAdmin(null);
   router.push('/login');
 }
 

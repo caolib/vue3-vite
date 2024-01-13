@@ -5,17 +5,31 @@ import router from "@/router/index.js";
 import {updateReaderService} from "@/methods/reader.js";
 import {ElMessage} from "element-plus";
 import HeaderView from "@/components/HeaderView.vue";
+import {useAdminStore} from "@/stores/admin.js";
+import {updateAdminService} from "@/methods/admin.js";
 
-
+const adminStore = useAdminStore();
+const isAdmin = adminStore.isAdmin;
+const admin = adminStore.admin;
 const readerStore = useReaderStore();
-let reader = readerStore.reader;
 
-let isMan = ref(reader.gender === '男');
+let reader;
+let isMan;
+if (!isAdmin) {
+  reader = readerStore.reader;
+  isMan = ref(reader.gender === '男');
+}
 
-const saveReader = () => {
-  updateReaderService(reader);
+const saveReader = async () => {
+  await updateReaderService(reader);
   ElMessage.success('已保存');
-  router.push('/book');
+  await router.push('/book');
+}
+
+const updateAdmin = async () => {
+  await updateAdminService(admin.id,admin.nickname);
+  ElMessage.success('已保存');
+  await router.push('/book');
 }
 
 </script>
@@ -31,27 +45,21 @@ const saveReader = () => {
         <header-view/>
       </el-header>
       <el-main>
-        <el-form
-            ref="ruleFormRef"
-            :model="reader"
-            status-icon
-            label-width="120px"
-            class="centered-form"
-            title="登录">
-
+        <el-form v-if="!isAdmin" ref="ruleFormRef" :model="reader" status-icon
+                 label-width="120px" class="centered-form">
           <el-form-item class="form-row">
             <h2>个人信息</h2>
           </el-form-item>
 
-          <el-form-item label="昵称" prop="username" class="form-row">
+          <el-form-item label="昵称" class="form-row">
             <el-input v-model="reader.nickname"/>
           </el-form-item>
 
-          <el-form-item label="年龄" prop="username" class="form-row">
+          <el-form-item label="年龄" class="form-row">
             <el-input v-model="reader.age"/>
           </el-form-item>
 
-          <el-form-item label="电话" prop="username" class="form-row">
+          <el-form-item label="电话" class="form-row">
             <el-input v-model="reader.tel"/>
           </el-form-item>
 
@@ -69,6 +77,22 @@ const saveReader = () => {
           <div class="button-row">
             <el-form-item>
               <el-button type="primary" @click="saveReader()">保存</el-button>
+              <el-button type="danger" @click="router.push('/book')">取消</el-button>
+            </el-form-item>
+          </div>
+        </el-form>
+
+        <el-form v-if="isAdmin" ref="ruleFormRef" :model="admin" status-icon
+                 label-width="120px" class="centered-form">
+          <el-form-item class="form-row">
+            <h2>个人信息</h2>
+          </el-form-item>
+          <el-form-item label="昵称" class="form-row">
+            <el-input v-model="admin.nickname"/>
+          </el-form-item>
+          <div class="button-row">
+            <el-form-item>
+              <el-button type="primary" @click="updateAdmin">保存</el-button>
               <el-button type="danger" @click="router.push('/book')">取消</el-button>
             </el-form-item>
           </div>

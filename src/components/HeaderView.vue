@@ -3,9 +3,16 @@
 import {useDark} from "@vueuse/core";
 import {useReaderStore} from "@/stores/reader.js";
 import {useTokenStore} from "@/stores/token.js";
+import {useAdminStore} from "@/stores/admin.js";
+import {ref} from 'vue'
+import {Moon, Sunny} from "@element-plus/icons-vue";
+import router from "@/router/index.js";
 
+const adminStore = useAdminStore();
 const readerStore = useReaderStore();
 const tokenStore = useTokenStore();
+
+const isAdmin = adminStore.isAdmin;
 
 const isDark = useDark();
 // 切换深浅色
@@ -23,10 +30,6 @@ const handleCommand = function (command) {
   }
 };
 
-import {ref} from 'vue'
-import {Moon, Sunny} from "@element-plus/icons-vue";
-import router from "@/router/index.js";
-
 const url = ref('https://pic.imgdb.cn/item/659be939871b83018a2687aa.jpg');
 
 </script>
@@ -34,11 +37,11 @@ const url = ref('https://pic.imgdb.cn/item/659be939871b83018a2687aa.jpg');
 <template>
   <div class="demo-fit header-view">
     <el-menu mode="horizontal">
-
       <!--头像-->
       <el-dropdown @command="handleCommand">
         <el-menu-item index="1">
-          <el-avatar @click="router.push('/reader')" shape="circle" :size="42" :fit="'cover'" :src="url"/>
+          <el-avatar @click="router.push('/reader')" shape="circle" :size="42"
+                     :fit="'cover'" :src="url"/>
         </el-menu-item>
         <template #dropdown>
           <el-dropdown-menu>
@@ -49,14 +52,20 @@ const url = ref('https://pic.imgdb.cn/item/659be939871b83018a2687aa.jpg');
 
       <!--昵称标签-->
       <el-menu-item h="full">
-        <el-tag type="success" size="large" round>{{readerStore.reader.nickname}}</el-tag>
+        <el-tag type="success" size="large" round>
+          {{ isAdmin ? adminStore.admin.nickname : readerStore.reader.nickname }}
+        </el-tag>
       </el-menu-item>
 
       <!--深浅色图标-->
       <el-menu-item h="full">
         <el-button @click="toggleDark" id="checkTheme">
-          <el-icon v-if="isDark"><moon/></el-icon>
-          <el-icon v-else><Sunny/></el-icon>
+          <el-icon v-if="isDark">
+            <moon/>
+          </el-icon>
+          <el-icon v-else>
+            <Sunny/>
+          </el-icon>
         </el-button>
       </el-menu-item>
     </el-menu>

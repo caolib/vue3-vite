@@ -14,8 +14,8 @@ const readerStore = useReaderStore();
 const tableData = ref([]);
 
 // 页面加载时获取所有书籍
-onMounted(() => {
-  getAllBooks();
+onMounted(async () => {
+  await getAllBooks();
 })
 
 // 获取所有书籍
