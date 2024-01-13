@@ -4,7 +4,7 @@ import {adminLoginService, loginService} from "@/methods/login";
 import router from '@/router';
 import {useTokenStore} from "@/stores/token";
 import {useReaderStore} from "@/stores/reader.js";
-import {ElMessage, ElNotification} from "element-plus";
+import {ElNotification} from "element-plus";
 import {useAdminStore} from "@/stores/admin.js";
 
 const adminStore = useAdminStore();
@@ -70,7 +70,7 @@ const adminLogin = async function () {
   //设置为管理员视图
   adminStore.setIsAdmin(true);
 
-  await router.push('/book');
+  await router.push('/admin/book');
   ElNotification.success({
     title: '登录成功',
     message: 'Hello,' + returnAdmin.nickname,
@@ -119,15 +119,14 @@ let isAdmin = ref(false);
         <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
         <el-button type="success" @click="router.push('/register')">注册</el-button>
       </el-form-item>
+
       <el-switch
-          v-model="isAdmin"
-          class="mb-2"
+          v-model="isAdmin" class="mb-2"
           style="--el-switch-on-color: #13ce66; --el-switch-off-color: #fd8250"
-          inline-prompt
+          inline-prompt size="large"
           active-text="管理员"
           inactive-text="读者"/>
     </div>
-
   </el-form>
 
 </template>

@@ -1,13 +1,13 @@
 <template>
   <el-menu v-model="activeIndex" class="el-menu-vertical-demo">
-    <el-menu-item index="1" @click="router.push('/book')">
+    <el-menu-item index="1" @click="route">
       <el-icon>
         <search/>
       </el-icon>
       <el-button link :type="'primary'">图书信息查询</el-button>
     </el-menu-item>
 
-    <el-menu-item index="2" @click="router.push('/borrow')">
+    <el-menu-item v-if="!adminStore.isAdmin" index="2" @click="router.push('/borrow')">
       <el-icon>
         <search/>
       </el-icon>
@@ -60,6 +60,14 @@ const logout = () => {
   readerStore.setReader(null);
   adminStore.setAdmin(null);
   router.push('/login');
+}
+
+const route = ()=>{
+  if (adminStore.isAdmin) {
+    router.push('/admin/book');
+  }else{
+    router.push('/book');
+  }
 }
 
 </script>

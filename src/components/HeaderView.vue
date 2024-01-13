@@ -25,9 +25,9 @@ if (isAdmin) {
 }
 // 切换深浅色
 const isDark = useDark();
-const toggleDark = () => {
-  isDark.value = !isDark.value
-}
+// const toggleDark = () => {
+//   isDark.value = !isDark.value
+// }
 
 // 头像下拉菜单命令
 const handleCommand = function (command) {
@@ -81,17 +81,21 @@ const url = ref('https://pic.imgdb.cn/item/65a271fe871b83018a8f9a8f.gif');
         </el-tag>
       </el-menu-item>
 
-      <!--深浅色图标-->
       <el-menu-item h="full">
-        <el-button @click="toggleDark" id="checkTheme" link>
-          <el-icon v-if="isDark">
-            <moon/>
-          </el-icon>
-          <el-icon v-else>
-            <Sunny/>
-          </el-icon>
-        </el-button>
+        <el-tag v-if="isAdmin" type="warning" size="large" round>
+          管理员
+        </el-tag>
       </el-menu-item>
+
+      <!--深浅色图标-->
+      <el-menu-item>
+        <el-switch
+            v-model="isDark" size="large"
+            :active-action-icon="Sunny"
+            :inactive-action-icon="Moon"
+            style="--el-switch-on-color: rgba(19,206,102,0.7); --el-switch-off-color: rgba(141,141,141,0.79)"/>
+      </el-menu-item>
+
     </el-menu>
   </div>
 </template>

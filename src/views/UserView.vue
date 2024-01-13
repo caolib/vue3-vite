@@ -45,6 +45,7 @@ const updateAdmin = async () => {
         <header-view/>
       </el-header>
       <el-main>
+        <!--读者个人信息-->
         <el-form v-if="!isAdmin" ref="ruleFormRef" :model="reader" status-icon
                  label-width="120px" class="centered-form">
           <el-form-item class="form-row">
@@ -82,6 +83,7 @@ const updateAdmin = async () => {
           </div>
         </el-form>
 
+        <!--管理员个人信息-->
         <el-form v-if="isAdmin" ref="ruleFormRef" :model="admin" status-icon
                  label-width="120px" class="centered-form">
           <el-form-item class="form-row">
@@ -93,7 +95,7 @@ const updateAdmin = async () => {
           <div class="button-row">
             <el-form-item>
               <el-button type="primary" @click="updateAdmin">保存</el-button>
-              <el-button type="danger" @click="router.push('/book')">取消</el-button>
+              <el-button type="danger" @click="router.push('/admin/book')">取消</el-button>
             </el-form-item>
           </div>
         </el-form>

@@ -1,9 +1,9 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import {getAllBookService} from "@/methods/book.js";
+import {addBookService, getAllBookService} from "@/methods/book.js";
 import SideView from "@/components/SideView.vue";
 import HeaderView from "@/components/HeaderView.vue";
-import {Search} from "@element-plus/icons-vue";
+import {Plus} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
 import {useReaderStore} from "@/stores/reader.js";
 import {borrowService} from "@/methods/borrow.js";
@@ -96,6 +96,50 @@ const borrow = async () => {
   await getAllBooks();
 }
 
+// 添加书籍
+let showAdd = ref(false);
+
+const addBook = ref({
+  title: null,
+  isbn: null,
+  cover: null,
+  introduction: null,
+  number: 0,
+  author: null
+})
+
+// 添加书籍
+const addBookFunc = async ()=>{
+  // console.log(addBook.value);
+
+  await addBookService(addBook.value);
+  ElMessage.success("添加成功!");
+  showAdd.value = false;
+}
+
+
+// 添加表单校验规则
+const rules = {
+  title: [
+    { max: 30, message: '最多30个字符', trigger: ['blur', 'change'] }
+  ],
+  isbn: [
+    { max: 20, message: '最多20个字符', trigger: ['blur', 'change'] }
+  ],
+  cover: [
+    { max: 200, message: '最多200个字符', trigger: ['blur', 'change'] }
+  ],
+  introduction: [
+    { max: 400, message: '最多400个字符', trigger: ['blur', 'change'] }
+  ],
+  number: [
+    { type: 'number', min: 0, message: '必须是大于等于0的数字', trigger: ['blur', 'change'] }
+  ],
+  author: [
+    { max: 20, message: '最多20个字符', trigger: ['blur', 'change'] }
+  ]
+};
+
 </script>
 <!-- --------------------------------------- 一条朴实的分割线 ----------------------------------------- -->
 <template>
@@ -114,10 +158,12 @@ const borrow = async () => {
             <el-col :span="24">
               <!--搜索条件框-->
               <el-row>
-                <el-button @click="getAllBooks" :icon="Search" size="large" type="success" circle :span="2"/>
+                <!--添加书籍按钮-->
+                <el-button @click="showAdd = true" :icon="Plus" size="large" type="success" circle :span="2"/>
                 <el-col :span="1"/>
                 <el-col :span="6">
-                  <el-input @input="getAllBooks" v-model="condition.bookName" size="large" placeholder="书名" clearable/>
+                  <el-input @input="getAllBooks" v-model="condition.bookName" size="large" placeholder="书名"
+                            clearable/>
                 </el-col>
                 <el-col :span="1"/>
                 <el-col :span="6">
@@ -183,7 +229,7 @@ const borrow = async () => {
                 <el-pagination
                     v-model:current-page="condition.currentPage"
                     v-model:page-size="condition.pageSize"
-                    :page-sizes="[5,8,10, 15, 30,50,100]"
+                    :page-sizes="[5,8,10,15,30,50,100]"
                     :background="true"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total"
@@ -192,18 +238,13 @@ const borrow = async () => {
               </div>
 
               <!--详细信息表单-->
-              <el-dialog
-                  v-model="detail"
-                  title="图书详细信息"
-                  width="50%"
-                  center
-                  align-center
-                  :before-close="()=>{detail = false}">
+              <el-dialog title="图书详细信息" width="50%" center align-center
+                         v-model="detail" :before-close="()=>{detail = false}">
                 <el-form :inline="true" v-if="detail">
                   <el-form-item style="display: flex;">
                     <el-image style="width: 100px; height: 150px" :src="book.cover" :fit="'fill'"/>
                     <div style="font-size: 20px; font-weight: bold; align-self: center; margin-left: 20px;">
-                      《{{ book.title }}》
+                      <el-input v-model="book.title"/>
                     </div>
                   </el-form-item>
                   <el-form-item label="作者">
@@ -219,14 +260,45 @@ const borrow = async () => {
 
                 <el-form v-if="detail">
                   <el-form-item label="简介">
-                    <el-input
-                        v-model="book.introduction"
-                        :autosize="{ minRows: 2, maxRows: 6 }"
-                        type="textarea"
-                        readonly/>
+                    <el-input v-model="book.introduction"
+                              :autosize="{ minRows: 2, maxRows: 6 }"
+                              type="textarea"/>
                   </el-form-item>
                 </el-form>
+
               </el-dialog>
+
+
+              <!--添加书籍表单-->
+              <el-dialog v-model="showAdd" title="添加图书" width="30%" center align-center>
+                <el-form :inline="true" :model="addBook" :rules="rules">
+                  <el-form-item label="书名" prop="title" required>
+                    <el-input v-model="addBook.title"/>
+                  </el-form-item>
+                  <el-form-item label="封面" prop="cover" required>
+                    <el-input v-model="addBook.cover"/>
+                  </el-form-item>
+                  <el-form-item label="ISBN" prop="isbn" required>
+                    <el-input v-model="addBook.isbn"/>
+                  </el-form-item>
+                  <el-form-item label="库存" prop="number" required>
+                    <el-input v-model.number="addBook.number"/>
+                  </el-form-item>
+                  <el-form-item label="作者" prop="author">
+                    <el-input v-model="addBook.author"/>
+                  </el-form-item>
+                  <el-form-item label="简介" prop="introduction">
+                    <el-input type="textarea" v-model="addBook.introduction" clearable/>
+                  </el-form-item>
+                </el-form>
+
+                <el-form>
+                  <el-button type="primary" @click="addBookFunc">添加</el-button>
+                  <el-button type="danger">取消</el-button>
+                </el-form>
+
+              </el-dialog>
+
             </el-col>
           </el-row>
         </el-main>

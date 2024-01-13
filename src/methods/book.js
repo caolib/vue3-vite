@@ -4,4 +4,10 @@ const getAllBookService = function (condition) {
     return request.post("/book", condition);
 };
 
-export {getAllBookService};
+// 添加书籍
+const addBookService = (book)=>{
+    return request.post("/book/add", book);
+}
+
+
+export {getAllBookService,addBookService};
