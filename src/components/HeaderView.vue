@@ -1,11 +1,10 @@
 <script setup>
-
-import {useDark} from "@vueuse/core";
-import {useReaderStore} from "@/stores/reader.js";
-import {useTokenStore} from "@/stores/token.js";
-import {useAdminStore} from "@/stores/admin.js";
-import {ref} from 'vue'
-import {Link, Moon, Sunny, SwitchButton} from "@element-plus/icons-vue";
+import { useDark } from "@vueuse/core";
+import { useReaderStore } from "@/stores/reader.js";
+import { useTokenStore } from "@/stores/token.js";
+import { useAdminStore } from "@/stores/admin.js";
+import { ref } from "vue";
+import { Link, Moon, Sunny, SwitchButton } from "@element-plus/icons-vue";
 import router from "@/router/index.js";
 
 const adminStore = useAdminStore();
@@ -27,21 +26,20 @@ const isDark = useDark();
 
 // 头像下拉菜单命令
 const handleCommand = function (command) {
-  if (command === 'logout') {
+  if (command === "logout") {
     // 退出后清除token和reader信息
     tokenStore.setToken(null);
     readerStore.setReader(null);
-    router.push('/login');
-  } else if (command === 'frontend') {
-    window.open('https://github.com/TankingCao/vue3-vite');
-  } else if (command === 'backend') {
-    window.open('https://github.com/TankingCao/java_design');
+    router.push("/login");
+  } else if (command === "frontend") {
+    window.open("https://github.com/TankingCao/vue3-vite");
+  } else if (command === "backend") {
+    window.open("https://github.com/TankingCao/java_design");
   }
 };
 
 // 头像图片
-const url = ref('https://pic.imgdb.cn/item/65a271fe871b83018a8f9a8f.gif');
-
+const url = ref("https://pic.imgdb.cn/item/65a271fe871b83018a8f9a8f.gif");
 </script>
 
 <template>
@@ -50,8 +48,13 @@ const url = ref('https://pic.imgdb.cn/item/65a271fe871b83018a8f9a8f.gif');
       <!--头像-->
       <el-dropdown @command="handleCommand">
         <el-menu-item index="1">
-          <el-avatar @click="router.push('/user')" shape="square"
-                     :size="42" :fit="'cover'" :src="url"/>
+          <el-avatar
+            @click="router.push('/user')"
+            shape="square"
+            :size="42"
+            :fit="'cover'"
+            :src="url"
+          />
         </el-menu-item>
         <template #dropdown>
           <el-dropdown-menu>
@@ -64,7 +67,9 @@ const url = ref('https://pic.imgdb.cn/item/65a271fe871b83018a8f9a8f.gif');
             </el-dropdown-item>
 
             <el-dropdown-item command="logout">
-              <el-button link type="danger" :icon="SwitchButton">退出登录</el-button>
+              <el-button link type="danger" :icon="SwitchButton"
+                >退出登录</el-button
+              >
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -81,19 +86,22 @@ const url = ref('https://pic.imgdb.cn/item/65a271fe871b83018a8f9a8f.gif');
         <el-tag v-if="isAdmin" type="warning" size="large" round>
           管理员
         </el-tag>
+        <el-tag v-else type="primary" size="large" round> 读者 </el-tag>
       </el-menu-item>
 
       <!--深浅色图标-->
       <el-menu-item>
         <el-switch
-            v-model="isDark" size="large"
-            :active-action-icon="Moon"
-            :inactive-action-icon="Sunny"
-            style="--el-switch-on-color: rgba(19,206,102,0.7); --el-switch-off-color: rgba(141,141,141,0.79)"/>
+          v-model="isDark"
+          size="large"
+          :active-action-icon="Moon"
+          :inactive-action-icon="Sunny"
+          style="
+            --el-switch-on-color: rgba(19, 206, 102, 0.7);
+            --el-switch-off-color: rgba(141, 141, 141, 0.79);
+          "
+        />
       </el-menu-item>
-
     </el-menu>
   </div>
 </template>
-
-
