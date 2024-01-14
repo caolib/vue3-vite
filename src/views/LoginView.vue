@@ -74,7 +74,7 @@ const adminLogin = async function () {
   ElNotification.success({
     title: '登录成功',
     message: 'Hello,' + returnAdmin.nickname,
-    duration: 1500
+    duration: 3000
   });
 };
 

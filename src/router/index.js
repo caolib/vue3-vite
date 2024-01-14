@@ -38,6 +38,11 @@ const router = createRouter({
             name: "borrow",
             component: () => import("../views/BorrowView.vue"),
         },
+        {
+            path: "/reader",
+            name: "reader",
+            component: () => import("../views/admin/ReaderView.vue"),
+        },
     ],
 });
 

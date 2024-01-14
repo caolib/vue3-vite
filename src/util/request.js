@@ -1,11 +1,10 @@
 import axios from "axios";
 import {ElMessage} from "element-plus";
 import router from "@/router";
+import {useTokenStore} from "@/stores/token.js";
 
 const baseURL = "/api";
 const instance = axios.create({baseURL});
-
-import {useTokenStore} from "@/stores/token.js";
 
 const tokenStore = useTokenStore();
 
@@ -14,7 +13,7 @@ const tokenStore = useTokenStore();
 instance.interceptors.response.use(
     //成功回调
     (result) => {
-        if(result.data.code===0){
+        if (result.data.code === 0) {
             ElMessage.error(result.data.msg);
             return Promise.reject(result);
         }
@@ -32,7 +31,7 @@ instance.interceptors.response.use(
                 ElMessage.error("身份已过期,请重新登录！");
                 router.push('/login');
             } else {
-                ElMessage.error("未知错误:" + error.response.message);
+                ElMessage.error("服务器异常！" + code);
             }
         }
         // 将异步的状态设置为失败状态
@@ -44,7 +43,7 @@ instance.interceptors.response.use(
 instance.interceptors.request.use(
     (config) => {
         //登录请求不需要token
-        if (config.url.endsWith('/login')||config.url.endsWith('/register')) {
+        if (config.url.endsWith('/login') || config.url.endsWith('/register')) {
             return config;
         }
         //如果有token，将token放入请求头中

@@ -4,7 +4,7 @@
       <el-icon>
         <search/>
       </el-icon>
-      <el-button link :type="'primary'">图书信息查询</el-button>
+      <el-button link :type="'primary'">图书信息</el-button>
     </el-menu-item>
 
     <el-menu-item v-if="!adminStore.isAdmin" index="2" @click="router.push('/borrow')">
@@ -21,7 +21,14 @@
       <el-button link :type="'primary'">个人信息</el-button>
     </el-menu-item>
 
-    <el-menu-item index="4" @click="logout">
+    <el-menu-item index="4" @click="router.push('/reader')">
+      <el-icon>
+        <setting/>
+      </el-icon>
+      <el-button link :type="'primary'">用户管理</el-button>
+    </el-menu-item>
+
+    <el-menu-item index="5" @click="logout">
       <el-icon>
         <switch-button/>
       </el-icon>

@@ -96,6 +96,13 @@ const borrow = async () => {
   await getAllBooks();
 }
 
+// 禁止选择当前日期之前的日期
+const disabledDate = (time) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return time.getTime() < today.getTime();
+};
+
 </script>
 <!-- --------------------------------------- 一条朴实的分割线 ----------------------------------------- -->
 <template>
@@ -166,7 +173,8 @@ const borrow = async () => {
                       placeholder="选择归还日期"
                       format="YYYY-MM-DD"
                       date-format="MMM DD, YYYY"
-                      time-format="HH:mm"/>
+                      time-format="HH:mm"
+                      :disabled-date="disabledDate"/>
                 </div>
                 <template #footer>
                   <div style="flex: auto">
@@ -192,13 +200,9 @@ const borrow = async () => {
               </div>
 
               <!--详细信息表单-->
-              <el-dialog
-                  v-model="detail"
-                  title="图书详细信息"
-                  width="50%"
-                  center
-                  align-center
-                  :before-close="()=>{detail = false}">
+              <el-dialog title="图书详细信息" width="50%" center align-center
+                  v-model="detail" :preview-src-list="[book.cover]"
+                         :before-close="()=>{detail = false}">
                 <el-form :inline="true" v-if="detail">
                   <el-form-item style="display: flex;">
                     <el-image style="width: 100px; height: 150px" :src="book.cover" :fit="'fill'"/>

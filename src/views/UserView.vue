@@ -15,6 +15,7 @@ const readerStore = useReaderStore();
 
 let reader;
 let isMan;
+
 if (!isAdmin) {
   reader = readerStore.reader;
   isMan = ref(reader.gender === '男');
@@ -27,7 +28,8 @@ const saveReader = async () => {
 }
 
 const updateAdmin = async () => {
-  await updateAdminService(admin.id,admin.nickname);
+  console.log(admin);
+  await updateAdminService(admin);
   ElMessage.success('已保存');
   await router.push('/book');
 }
@@ -50,6 +52,14 @@ const updateAdmin = async () => {
                  label-width="120px" class="centered-form">
           <el-form-item class="form-row">
             <h2>个人信息</h2>
+          </el-form-item>
+
+          <el-form-item label="用户名" class="form-row">
+            <el-input v-model="reader.username" disabled/>
+          </el-form-item>
+
+          <el-form-item label="密码" class="form-row">
+            <el-input v-model="reader.password"/>
           </el-form-item>
 
           <el-form-item label="昵称" class="form-row">
@@ -91,6 +101,10 @@ const updateAdmin = async () => {
           </el-form-item>
           <el-form-item label="昵称" class="form-row">
             <el-input v-model="admin.nickname"/>
+          </el-form-item>
+
+          <el-form-item label="密码" class="form-row">
+            <el-input v-model="admin.password"/>
           </el-form-item>
           <div class="button-row">
             <el-form-item>

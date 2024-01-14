@@ -1,14 +1,11 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import {addBookService, getAllBookService} from "@/methods/book.js";
+import {addBookService, deleteBookService, getAllBookService, updateBookService} from "@/methods/book.js";
 import SideView from "@/components/SideView.vue";
 import HeaderView from "@/components/HeaderView.vue";
 import {Plus} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
-import {useReaderStore} from "@/stores/reader.js";
-import {borrowService} from "@/methods/borrow.js";
 
-const readerStore = useReaderStore();
 const tableData = ref([]);
 
 // 页面加载时获取所有书籍
@@ -63,8 +60,12 @@ let detail = ref(false);
 const showDetail = (row) => {
   detail.value = true;
   book.value = row;
-  console.log('detail:' + detail.value);
-  console.log(row);
+}
+
+// 关闭详细信息对话框
+const closeDialog = async () => {
+  detail.value = false;
+  await getAllBooks();
 }
 
 //书籍信息
@@ -77,26 +78,8 @@ let book = ref({
   author: null
 });
 
-// 应该归还的日期
-const dueDate = ref(new Date());
-let showDrawer = ref(false);
 
-//显示抽屉
-const showBorrow = (row) => {
-  showDrawer.value = true;
-  book.value = row;
-}
-
-//借阅
-const borrow = async () => {
-  await borrowService(book.value.isbn, readerStore.reader.id, dueDate.value);
-  ElMessage.success("借阅成功");
-  showDrawer.value = false;
-  //刷新表格
-  await getAllBooks();
-}
-
-// 添加书籍
+// 添加书籍的信息
 let showAdd = ref(false);
 
 const addBook = ref({
@@ -104,41 +87,57 @@ const addBook = ref({
   isbn: null,
   cover: null,
   introduction: null,
-  number: 0,
+  number: null,
   author: null
 })
 
 // 添加书籍
-const addBookFunc = async ()=>{
+const addBookFunc = async () => {
   // console.log(addBook.value);
 
   await addBookService(addBook.value);
   ElMessage.success("添加成功!");
   showAdd.value = false;
+  condition.value.bookName = addBook.value.title;
+  await getAllBooks();
 }
-
 
 // 添加表单校验规则
 const rules = {
   title: [
-    { max: 30, message: '最多30个字符', trigger: ['blur', 'change'] }
+    {max: 30, message: '最多30个字符', trigger: ['blur', 'change']}
   ],
   isbn: [
-    { max: 20, message: '最多20个字符', trigger: ['blur', 'change'] }
+    {max: 20, message: '最多20个字符', trigger: ['blur', 'change']}
   ],
   cover: [
-    { max: 200, message: '最多200个字符', trigger: ['blur', 'change'] }
+    {max: 200, message: '最多200个字符', trigger: ['blur', 'change']}
   ],
   introduction: [
-    { max: 400, message: '最多400个字符', trigger: ['blur', 'change'] }
+    {max: 400, message: '最多400个字符', trigger: ['blur', 'change']}
   ],
   number: [
-    { type: 'number', min: 0, message: '必须是大于等于0的数字', trigger: ['blur', 'change'] }
+    {type: 'number', min: 0, message: '必须是大于等于0的数字', trigger: ['blur', 'change']}
   ],
   author: [
-    { max: 20, message: '最多20个字符', trigger: ['blur', 'change'] }
+    {max: 20, message: '最多20个字符', trigger: ['blur', 'change']}
   ]
 };
+
+// 删除书籍信息
+const deleteBook = async (isbn) => {
+  await deleteBookService(isbn);
+  ElMessage.success('删除成功!');
+  await getAllBooks();
+}
+
+// 修改书籍信息
+const updateBook = async () => {
+  console.log(book.value);
+  await updateBookService(book.value);
+  detail.value = false;
+  ElMessage.success("已保存!");
+}
 
 </script>
 <!-- --------------------------------------- 一条朴实的分割线 ----------------------------------------- -->
@@ -177,10 +176,8 @@ const rules = {
               <br>
 
               <!--书籍表格-->
-              <el-table
-                  :data="tableData"
-                  style="width: 100%"
-                  v-loading="loading">
+              <el-table style="width: 100%"
+                        :data="tableData" v-loading="loading">
                 <el-table-column prop="title" label="书名" width="150"/>
                 <el-table-column prop="author" label="作者" width="150"/>
                 <el-table-column prop="isbn" label="ISBN" width="150"/>
@@ -191,39 +188,21 @@ const rules = {
                     <el-button link type="primary" size="small"
                                @click="showDetail(scope.row)">详细信息
                     </el-button>
-                    <el-button link type="primary" size="small"
-                               @click="showBorrow(scope.row)"
-                               :disabled="scope.row.number === 0">借阅
-                    </el-button>
+                    <el-popconfirm
+                        confirm-button-text="Yes"
+                        cancel-button-text="我再想想"
+                        confirm-button-type="danger"
+                        @confirm="deleteBook(scope.row.isbn)"
+                        title="真的要删除这本书吗?">
+                      <template #reference>
+                        <el-button link type="danger" size="small">删除
+                        </el-button>
+                      </template>
+                    </el-popconfirm>
                   </template>
                 </el-table-column>
               </el-table>
-
-              <!--借阅图书信息抽屉-->
-              <el-drawer v-model="showDrawer">
-                <template #header>
-                  <h1>借阅</h1>
-                </template>
-                <el-image style="width: 100px; height: 150px" :src="book.cover" :fit="'fill'"/>
-                <div class="block">
-                  <el-date-picker
-                      v-model="dueDate"
-                      type="datetime"
-                      placeholder="选择归还日期"
-                      format="YYYY-MM-DD"
-                      date-format="MMM DD, YYYY"
-                      time-format="HH:mm"/>
-                </div>
-                <template #footer>
-                  <div style="flex: auto">
-                    <el-button>取消</el-button>
-                    <el-button type="primary" @click="borrow">提交</el-button>
-                  </div>
-                </template>
-              </el-drawer>
-
               <br>
-
               <!--分页组件-->
               <div>
                 <el-pagination
@@ -237,58 +216,68 @@ const rules = {
                     @current-change="handleCurrentChange"/>
               </div>
 
-              <!--详细信息表单-->
-              <el-dialog title="图书详细信息" width="50%" center align-center
-                         v-model="detail" :before-close="()=>{detail = false}">
-                <el-form :inline="true" v-if="detail">
-                  <el-form-item style="display: flex;">
-                    <el-image style="width: 100px; height: 150px" :src="book.cover" :fit="'fill'"/>
-                    <div style="font-size: 20px; font-weight: bold; align-self: center; margin-left: 20px;">
-                      <el-input v-model="book.title"/>
-                    </div>
+              <!--详细信息表单,可以修改-->
+              <el-dialog title="图书详细信息" width="40%" center align-center
+                         v-model="detail" :before-close="closeDialog">
+                <el-form :inline="true" :rules="rules" :model="book">
+                  <el-form-item style="display: flex;" prop="cover">
+                    <el-image style="width: 100px; height: 150px"
+                              :preview-src-list="[book.cover]"
+                              :src="book.cover" :fit="'fill'"/>
                   </el-form-item>
-                  <el-form-item label="作者">
-                    {{ book.author }}
-                  </el-form-item>
-                  <el-form-item label="库存量">
-                    {{ book.number }}
-                  </el-form-item>
-                  <el-form-item label="ISBN">
-                    {{ book.isbn }}
-                  </el-form-item>
-                </el-form>
 
-                <el-form v-if="detail">
-                  <el-form-item label="简介">
+                  <el-form-item label="书名" prop="title" required>
+                    <el-input v-model="book.title"/>
+                  </el-form-item>
+
+                  <el-form-item label="库存" prop="number" required>
+                    <el-input v-model.number="book.number"/>
+                  </el-form-item>
+
+                  <el-form-item label="作者" prop="author">
+                    <el-input v-model="book.author"/>
+                  </el-form-item>
+
+                  <el-form-item label="ISBN" prop="isbn">
+                    {{book.isbn}}
+                  </el-form-item>
+                  <el-form-item label="简介" prop="introduction">
                     <el-input v-model="book.introduction"
                               :autosize="{ minRows: 2, maxRows: 6 }"
                               type="textarea"/>
                   </el-form-item>
                 </el-form>
-
+                <!--保存-->
+                <el-form>
+                  <template #default="scope">
+                    <el-form-item>
+                      <el-button type="primary" @click="updateBook">保存</el-button>
+                      <el-button type="danger" @click="closeDialog">取消</el-button>
+                    </el-form-item>
+                  </template>
+                </el-form>
               </el-dialog>
-
 
               <!--添加书籍表单-->
               <el-dialog v-model="showAdd" title="添加图书" width="30%" center align-center>
                 <el-form :inline="true" :model="addBook" :rules="rules">
-                  <el-form-item label="书名" prop="title" required>
-                    <el-input v-model="addBook.title"/>
+                  <el-form-item prop="title" required>
+                    <el-input v-model="addBook.title" placeholder="书名"/>
                   </el-form-item>
-                  <el-form-item label="封面" prop="cover" required>
-                    <el-input v-model="addBook.cover"/>
+                  <el-form-item prop="isbn" required>
+                    <el-input v-model="addBook.isbn" placeholder="ISBN"/>
                   </el-form-item>
-                  <el-form-item label="ISBN" prop="isbn" required>
-                    <el-input v-model="addBook.isbn"/>
+                  <el-form-item prop="number" required>
+                    <el-input v-model.number="addBook.number" placeholder="库存"/>
                   </el-form-item>
-                  <el-form-item label="库存" prop="number" required>
-                    <el-input v-model.number="addBook.number"/>
+                  <el-form-item prop="cover">
+                    <el-input v-model="addBook.cover" placeholder="封面"/>
                   </el-form-item>
-                  <el-form-item label="作者" prop="author">
-                    <el-input v-model="addBook.author"/>
+                  <el-form-item prop="author">
+                    <el-input v-model="addBook.author" placeholder="作者"/>
                   </el-form-item>
-                  <el-form-item label="简介" prop="introduction">
-                    <el-input type="textarea" v-model="addBook.introduction" clearable/>
+                  <el-form-item prop="introduction">
+                    <el-input placeholder="简介" type="textarea" v-model="addBook.introduction" clearable/>
                   </el-form-item>
                 </el-form>
 
@@ -308,3 +297,6 @@ const rules = {
 
 </template>
 
+<style scoped>
+
+</style>

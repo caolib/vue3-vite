@@ -17,7 +17,6 @@ const isAdmin = adminStore.isAdmin;
 //显示名字标签
 let tag = ref();
 
-console.log('标签' + isAdmin);
 if (isAdmin) {
   tag.value = adminStore.admin.nickname;
 } else {
@@ -25,9 +24,6 @@ if (isAdmin) {
 }
 // 切换深浅色
 const isDark = useDark();
-// const toggleDark = () => {
-//   isDark.value = !isDark.value
-// }
 
 // 头像下拉菜单命令
 const handleCommand = function (command) {
@@ -91,8 +87,8 @@ const url = ref('https://pic.imgdb.cn/item/65a271fe871b83018a8f9a8f.gif');
       <el-menu-item>
         <el-switch
             v-model="isDark" size="large"
-            :active-action-icon="Sunny"
-            :inactive-action-icon="Moon"
+            :active-action-icon="Moon"
+            :inactive-action-icon="Sunny"
             style="--el-switch-on-color: rgba(19,206,102,0.7); --el-switch-off-color: rgba(141,141,141,0.79)"/>
       </el-menu-item>
 
