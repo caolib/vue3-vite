@@ -249,7 +249,7 @@ const updateBook = async () => {
                 </el-form>
                 <!--保存-->
                 <el-form>
-                  <template #default="scope">
+                  <template #default>
                     <el-form-item>
                       <el-button type="primary" @click="updateBook">保存</el-button>
                       <el-button type="danger" @click="closeDialog">取消</el-button>

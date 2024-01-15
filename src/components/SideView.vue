@@ -1,9 +1,7 @@
 <template>
   <el-menu v-model="activeIndex" class="el-menu-vertical-demo">
     <el-menu-item index="1" @click="route">
-      <el-icon>
-        <search />
-      </el-icon>
+      <el-icon><Notebook/></el-icon>
       <el-button link :type="'primary'">图书信息</el-button>
     </el-menu-item>
 
@@ -19,9 +17,7 @@
     </el-menu-item>
 
     <el-menu-item index="3" @click="router.push('/user')">
-      <el-icon>
-        <setting />
-      </el-icon>
+      <el-icon><User/></el-icon>
       <el-button link :type="'primary'">个人信息</el-button>
     </el-menu-item>
 
@@ -46,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Search, Setting, SwitchButton } from "@element-plus/icons-vue";
+import {Notebook, Search, Setting, SwitchButton, User} from "@element-plus/icons-vue";
 
 import { ref } from "vue";
 
