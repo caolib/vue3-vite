@@ -17,6 +17,7 @@ import {createPinia} from "pinia";
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 const app = createApp(App)
 
+// 使用pinia和persist保存状态并持久化
 const pinia = createPinia();
 const persist = createPersistedState();
 pinia.use(persist);

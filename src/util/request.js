@@ -13,6 +13,7 @@ const tokenStore = useTokenStore();
 instance.interceptors.response.use(
     //成功回调
     (result) => {
+        // 如果状态码为0，后端发生异常
         if (result.data.code === 0) {
             ElMessage.error(result.data.msg);
             return Promise.reject(result);

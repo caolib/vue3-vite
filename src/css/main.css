@@ -20,12 +20,14 @@ body::after {
     background-color: rgba(0, 0, 0, 0);
 }
 
+/* 表格添加圆角 */
 .el-table {
     opacity: 0.75;
     border-radius: 10px; /* 圆角半径 */
     overflow: hidden; /* 隐藏超出边界的内容 */
     box-shadow:  10px 10px 10px rgba(0, 0, 0, 0.5);
 }
+
 
 .el-header {
     height: 550px;
