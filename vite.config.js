@@ -29,7 +29,7 @@ export default defineConfig({
         port: 5173,
         proxy: {
             '/api': { //匹配请求路径中含有 /api 的请求
-                target: 'http://localhost:8080', //后端服务地址
+                target: 'http://47.115.226.138:8080', //后端服务地址
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, '') //去除路径中的/api，还原请求路径
             }
