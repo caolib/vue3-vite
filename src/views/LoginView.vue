@@ -42,9 +42,8 @@ const login = async function () {
   //保存用户信息和token
   readerStore.setReader(returnReader);
   tokenStore.setToken(returnReader.token);
-  //设置为管理员视图
   adminStore.setIsAdmin(false);
-  console.log("tokenStore:" + tokenStore.token);
+  // console.log("tokenStore:" + tokenStore.token);
   await router.push("/book");
   ElNotification.success({
     title: "登录成功",

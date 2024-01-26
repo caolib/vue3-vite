@@ -27,9 +27,11 @@ const isDark = useDark();
 // 头像下拉菜单命令
 const handleCommand = function (command) {
   if (command === "logout") {
-    // 退出后清除token和reader信息
+    // 退出后清除token和用户信息
     tokenStore.setToken(null);
-    readerStore.setReader(null);
+    readerStore.clearReader();
+    adminStore.clearAdmin();
+
     router.push("/login");
   } else if (command === "frontend") {
     window.open("https://github.com/TankingCao/vue3-vite");
@@ -86,7 +88,7 @@ const url = ref("https://pic.imgdb.cn/item/65a271fe871b83018a8f9a8f.gif");
         <el-tag v-if="isAdmin" type="warning" size="large" round>
           管理员
         </el-tag>
-        <el-tag v-else type="primary" size="large" round> 读者 </el-tag>
+        <el-tag v-else size="large" round> 读者 </el-tag>
       </el-menu-item>
 
       <!--深浅色图标-->

@@ -1,5 +1,4 @@
 <script setup>
-import {useReaderStore} from "@/stores/reader.js";
 import {
   deleteBorrowBatchService,
   deleteByIdService,
@@ -12,7 +11,7 @@ import SideView from "@/components/SideView.vue";
 import {ElMessage} from "element-plus";
 import {Delete} from "@element-plus/icons-vue";
 
-const readerStore = useReaderStore();
+
 const tableData = ref([]);
 
 onMounted(() => {
@@ -36,7 +35,7 @@ const tableRowClassName = ({row}) => {
 
 //获取当前读者的借阅信息
 const getBorrowByReaderId = async function () {
-  const result = await getBorrowByReaderIdService(readerStore.reader.id);
+  const result = await getBorrowByReaderIdService();
   tableData.value = result.data;
   if (filterStatus.value === 'all') {
     tableData.value = result.data;

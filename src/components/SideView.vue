@@ -62,8 +62,8 @@ const router = useRouter();
 const logout = () => {
   // 退出后清除token、reader和admin信息
   tokenStore.setToken(null);
-  readerStore.setReader(null);
-  adminStore.setAdmin(null);
+  readerStore.clearReader();
+  
   router.push("/login");
 };
 

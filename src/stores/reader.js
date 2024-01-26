@@ -18,8 +18,18 @@ export const useReaderStore = defineStore('reader', () => {
         const setReader = (data) => {
             reader.value = data;
         }
+        //清除信息
+        const clearReader = () => {
+            reader.value.id = '';
+            reader.value.username = '';
+            reader.value.nickname = '';
+            reader.value.gender = '';
+            reader.value.age = '';
+            reader.value.tel = '';
+            reader.value.token = '';
+        }
         return {
-            reader, setReader
+            reader, setReader,clearReader
         }
     },
     {

@@ -1,18 +1,15 @@
 import request from "@/util/request";
 
 // 查询个人的借书记录
-const getBorrowByReaderIdService = function (id) {
-    return request.get('/borrow', {
-        params: {readerId: id},
-    });
+const getBorrowByReaderIdService = function () {
+    return request.get('/borrow');
 };
 
 //借书
-const borrowService = function (isbn, readerId, dueDate) {
+const borrowService = function (isbn, dueDate) {
     return request.get('/borrow/borrowBook', {
         params: {
             isbn: isbn,
-            readerId: readerId,
             dueDate: dueDate
         }
     });

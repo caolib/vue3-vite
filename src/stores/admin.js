@@ -19,8 +19,16 @@ export const useAdminStore = defineStore('admin', () => {
         const setAdmin = (data) => {
             admin.value = data;
         }
+        //清除信息
+        const clearAdmin = ()=>{
+            admin.value.id = '';
+            admin.value.username = '';
+            admin.value.nickname = '';
+            admin.value.token = '';
+        }
+
         return {
-            admin, setAdmin,isAdmin,setIsAdmin
+            admin, setAdmin,isAdmin,setIsAdmin,clearAdmin
         }
     },
     // 持久化，pinia保存在内存中，刷新即丢失

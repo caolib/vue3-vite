@@ -13,7 +13,9 @@ const tableData = ref([]);
 
 // 页面加载时获取所有书籍
 onMounted(async () => {
+  loading.value = true;
   await getAllBooks();
+  loading.value = false;
 });
 
 // 获取所有书籍
@@ -89,7 +91,7 @@ const showBorrow = (row) => {
 
 //借阅
 const borrow = async () => {
-  await borrowService(book.value.isbn, readerStore.reader.id, dueDate.value);
+  await borrowService(book.value.isbn, dueDate.value);
   ElMessage.success("借阅成功");
   showDrawer.value = false;
   //刷新表格
