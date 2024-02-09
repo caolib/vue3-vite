@@ -43,8 +43,8 @@ const login = async function () {
   readerStore.setReader(returnReader);
   tokenStore.setToken(returnReader.token);
   adminStore.setIsAdmin(false);
-  // console.log("tokenStore:" + tokenStore.token);
-  await router.push("/book");
+  console.log("tokenStore:" + tokenStore.token);
+  router.push("/book");
   ElNotification.success({
     title: "登录成功",
     message: "Hello," + returnReader.nickname,

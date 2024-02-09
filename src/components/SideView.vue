@@ -63,7 +63,7 @@ const logout = () => {
   // 退出后清除token、reader和admin信息
   tokenStore.setToken(null);
   readerStore.clearReader();
-  
+  adminStore.clearAdmin();
   router.push("/login");
 };
 
@@ -75,3 +75,5 @@ const route = () => {
   }
 };
 </script>
+
+

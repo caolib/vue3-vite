@@ -24,14 +24,14 @@ if (!isAdmin) {
 const saveReader = async () => {
   await updateReaderService(reader);
   ElMessage.success('已保存');
-  await router.push('/book');
+ router.push('/book');
 }
 
 const updateAdmin = async () => {
   console.log(admin);
   await updateAdminService(admin);
   ElMessage.success('已保存');
-  await router.push('/book');
+ router.push('/book');
 }
 
 </script>

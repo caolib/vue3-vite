@@ -5,16 +5,16 @@ import {
   getBorrowByReaderIdService,
   returnBookService
 } from "@/methods/borrow.js";
-import {ref, onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import HeaderView from "@/components/HeaderView.vue";
 import SideView from "@/components/SideView.vue";
 import {ElMessage} from "element-plus";
 import {Delete} from "@element-plus/icons-vue";
 
-
 const tableData = ref([]);
 
 onMounted(() => {
+  // console.log(new Date().toISOString().split('T')[0]);
   getBorrowByReaderId();
 })
 
@@ -25,21 +25,27 @@ const returnBook = async (id, isbn) => {
   await getBorrowByReaderId();
 }
 
-// 表格行样式
+// 表格行背景颜色样式类
 const tableRowClassName = ({row}) => {
-  if (row.status === false) {
+  const current = new Date().toISOString().split('T')[0]
+  if (row.status) {
+    if (row.returnDate <= row.dueDate) {
+      return 'success-row';
+    }
+    return 'danger-row'
+  } else {
+    if (current > row.dueDate) {
+      return 'danger-row'
+    }
     return 'warning-row';
   }
-  return 'success-row';
 }
 
-//获取当前读者的借阅信息
+//获取当前读者的借阅信息，并根据状态筛选
 const getBorrowByReaderId = async function () {
   const result = await getBorrowByReaderIdService();
   tableData.value = result.data;
-  if (filterStatus.value === 'all') {
-    tableData.value = result.data;
-  } else if (filterStatus.value === 'returned') {
+  if (filterStatus.value === 'returned') {
     tableData.value = result.data.filter(item => item.status === true);
   } else if (filterStatus.value === 'notReturned') {
     tableData.value = result.data.filter(item => item.status === false);
@@ -48,7 +54,7 @@ const getBorrowByReaderId = async function () {
 
 // 刷新状态
 const flushStatus = async function (status) {
-  console.log(status);
+  // console.log(status);
   filterStatus.value = status;
   await getBorrowByReaderId();
 }
@@ -151,8 +157,12 @@ const deleteBorrowBatch = async () => {
   min-width: 150px;
 }
 
-.el-table .warning-row {
+.el-table .danger-row {
   --el-table-tr-bg-color: rgba(255, 107, 107, 0.3);
+}
+
+.el-table .warning-row {
+  --el-table-tr-bg-color: rgba(255, 251, 0, 0.3);
 }
 
 .el-table .success-row {
