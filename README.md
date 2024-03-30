@@ -1,7 +1,7 @@
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=cascadia+code&size=38&duration=3500&pause=1000&color=00ADFF&center=true&vCenter=true&random=false&width=1000&height=100&lines=Book+lending+management+system;图书借阅管理系统)](https://git.io/typing-svg)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-![GitHub Release](https://img.shields.io/github/v/release/tankingcao/vue3-vite?include_prereleases&display_name=release&labelColor=green&cacheSeconds=3600)
+![GitHub Release](https://img.shields.io/github/v/release/tankingcao/vue3-vite?include_prereleases&display_name=release&labelColor=red&cacheSeconds=3600)
 ![Static Badge](https://img.shields.io/badge/vue-v3.3.11-blue?style=plastic&logo=vue.js&logoColor=%234FC08D)
 ![Static Badge](https://img.shields.io/badge/ElementPlus-v2.3.1-blue?style=plastic)
 ![Static Badge](https://img.shields.io/badge/Axios-v1.6.5-white?style=plastic&logo=axios&logoColor=%235A29E4)
