@@ -1,48 +1,46 @@
 body {
-    /*背景图片*/
-    /* background-image: url('https://dogefs.s3.ladydaily.com/~/source/wallhaven/full/jx/wallhaven-jxl3qp.jpg?w=2560&h=1440&fmt=webp'); */
-    background-repeat: no-repeat;
-    background-size: cover;
+  /*背景图片*/
+  background-image: url("https://dogefs.s3.ladydaily.com/~/source/wallhaven/full/jx/wallhaven-jxl3qp.jpg?w=2560&h=1440&fmt=webp");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 body::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.2); /* 这里的0.5是遮罩的透明度*/
-    z-index: -1;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2); /* 这里的0.5是遮罩的透明度*/
+  z-index: -1;
 }
 
 #checkTheme {
-    background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 /* 表格添加圆角 */
 .el-table {
-    opacity: 0.75;
-    border-radius: 10px; /* 圆角半径 */
-    overflow: hidden; /* 隐藏超出边界的内容 */
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+  opacity: 0.75;
+  border-radius: 10px; /* 圆角半径 */
+  overflow: hidden; /* 隐藏超出边界的内容 */
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
 }
 
-
 .el-header {
-    height: 550px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    overflow: hidden;
+  height: 550px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: hidden;
 }
 
 .el-aside {
-    border-bottom-left-radius: 10px;
-    overflow: hidden;
-    height: 550px;
+  border-bottom-left-radius: 10px;
+  overflow: hidden;
+  height: 550px;
 }
 
-
 .el-dialog {
-    border-radius: 20px;
+  border-radius: 20px;
 }
