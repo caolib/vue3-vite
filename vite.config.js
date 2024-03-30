@@ -17,6 +17,7 @@ export default defineConfig({
             resolvers: [ElementPlusResolver()],
         }),
     ],
+    // 给src文件夹起别名为@
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))

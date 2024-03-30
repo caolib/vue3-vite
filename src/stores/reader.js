@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 import {ref} from 'vue';
 
-
 /**
  * 保存登录时用户的信息
  */
@@ -29,7 +28,7 @@ export const useReaderStore = defineStore('reader', () => {
             reader.value.token = '';
         }
         return {
-            reader, setReader,clearReader
+            reader, setReader, clearReader
         }
     },
     {

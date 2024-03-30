@@ -5,7 +5,6 @@ import {useTokenStore} from "@/stores/token.js";
 
 const baseURL = "/api";
 const instance = axios.create({baseURL});
-
 const tokenStore = useTokenStore();
 
 
@@ -22,19 +21,22 @@ instance.interceptors.response.use(
     },
     //失败回调
     (error) => {
-        // 状态码为401,419都跳转到登录界面
-        if (error.response) {
-            const code = error.response.status;
-            if (code === 401) {
+        const code = error.response.status;
+        switch (code) {
+            case 401:
                 ElMessage({message: '请先登录！', type: "error",});
-                router.push('/login');
-            } else if (code === 419) {
+                break;
+            case 419:
                 ElMessage.error("身份已过期,请重新登录！");
-                router.push('/login');
-            } else {
+                break;
+            default:
                 ElMessage.error("服务器异常！" + code);
-            }
+                break;
         }
+        router.push('/login');
+        window.local.reload();
+
+
         // 将异步的状态设置为失败状态
         return Promise.reject(error);
     }
