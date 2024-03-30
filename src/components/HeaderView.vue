@@ -108,7 +108,7 @@ const url = ref("https://pic.imgdb.cn/item/65a271fe871b83018a8f9a8f.gif");
             :inactive-action-icon="Sunny"
             style="
             --el-switch-on-color: rgba(19, 206, 102, 0.7);
-            --el-switch-off-color: rgba(141, 141, 141, 0.79);
+            --el-switch-off-color: rgb(74,163,252);
           "
         />
       </el-menu-item>

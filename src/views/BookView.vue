@@ -5,10 +5,8 @@ import SideView from "@/components/SideView.vue";
 import HeaderView from "@/components/HeaderView.vue";
 import { Search } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
-import { useReaderStore } from "@/stores/reader.js";
 import { borrowService } from "@/methods/borrow.js";
 
-const readerStore = useReaderStore();
 const tableData = ref([]);
 
 // 页面加载时获取所有书籍
@@ -21,9 +19,11 @@ onMounted(async () => {
 // 获取所有书籍
 const getAllBooks = async function () {
   loading.value = true;
+
   const result = await getAllBookService(condition.value);
   tableData.value = result.data;
   total.value = result.total;
+
   loading.value = false;
 };
 
@@ -34,10 +34,10 @@ const condition = ref({
   isbn: null,
   number: 0,
   currentPage: 1,
-  pageSize: 8,
+  pageSize: 15,
 });
 
-// 是否加载中
+// 是否显示加载中动画
 const loading = ref(false);
 
 // 结果总数
@@ -45,18 +45,14 @@ const total = ref(0);
 
 // 分页大小变化
 const handleSizeChange = (val) => {
-  loading.value = true;
   condition.value.pageSize = val;
   getAllBooks();
-  loading.value = false;
 };
 
 // 当前页数发生变化
 const handleCurrentChange = (val) => {
-  loading.value = true;
   condition.value.currentPage = val;
   getAllBooks();
-  loading.value = false;
 };
 
 let detail = ref(false);
@@ -165,9 +161,11 @@ const disabledDate = (time) => {
 
               <!--书籍表格-->
               <el-table
+                height="600"
                 :data="tableData"
                 style="width: 100%"
                 v-loading="loading"
+                element-loading-text="玩命加载中......"
               >
                 <el-table-column prop="title" label="书名" width="150" />
                 <el-table-column prop="author" label="作者" width="150" />
