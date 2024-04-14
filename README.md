@@ -13,7 +13,7 @@
 >
 > 简介：图书借阅管理系统前端，使用vue3框架
 >
-> **这是对应的:rocket:[后端项目地址](https://github.com/caolib/java_design)**:rocket:
+> **这是对应的 :rocket:[后端项目地址](https://github.com/caolib/java_design)**:rocket:
 
 ## 快速使用
 
