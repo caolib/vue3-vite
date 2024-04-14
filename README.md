@@ -2,11 +2,11 @@
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 ![GitHub Release](https://img.shields.io/github/v/release/tankingcao/vue3-vite?include_prereleases&display_name=release&labelColor=red&cacheSeconds=3600)
-![Static Badge](https://img.shields.io/badge/vue-v3.3.11-blue?style=plastic&logo=vue.js&logoColor=%234FC08D)
-![Static Badge](https://img.shields.io/badge/ElementPlus-v2.3.1-blue?style=plastic)
+![Static Badge](https://img.shields.io/badge/vue-v3.3.11-blue?style=plastic&logo=vue.js&logoColor=%234FC08D&labelColor=white)
+![Static Badge](https://img.shields.io/badge/ElementPlus-v2.3.1-blue?style=plastic&labelColor=white)
 ![Static Badge](https://img.shields.io/badge/Axios-v1.6.5-white?style=plastic&logo=axios&logoColor=%235A29E4)
-![Static Badge](https://img.shields.io/badge/nodejs-blue?logo=node.js&logoColor=green)
-![Static Badge](https://img.shields.io/badge/vite-blue?logo=vite&logoColor=green)
+![Static Badge](https://img.shields.io/badge/nodejs-blue?logo=node.js&logoColor=green&labelColor=white)
+![Static Badge](https://img.shields.io/badge/vite-blue?logo=vite&logoColor=green&labelColor=white)
 ![Static Badge](https://img.shields.io/badge/pinia-red)
 
 
