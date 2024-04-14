@@ -9,17 +9,19 @@
 ![Static Badge](https://img.shields.io/badge/vite-blue?logo=vite&logoColor=green&labelColor=white)
 ![Static Badge](https://img.shields.io/badge/pinia-red)
 
-
-
-> 简介：图书借阅管理系统前端开发，使用vue3框架
-> 
-> **这是对应的[后端项目地址](https://github.com/caolib/java_design)**
+> [!important]
+>
+> 简介：图书借阅管理系统前端，使用vue3框架
+>
+> **这是对应的:rocket:[后端项目地址](https://github.com/caolib/java_design)**:rocket:
 
 ## 快速使用
 
 ### 1.进入项目根目录，使用npm命令下载项目所需的依赖模块
 
-**注意：要先安装nodejs，最好以管理员身份执行命令！！！**
+> [!caution]
+>
+> :boom:**注意：要先安装nodejs，最好以管理员身份执行命令！！！**:boom:
 
 ```cmd
 npm install
