@@ -12,6 +12,8 @@
 
 
 > 简介：图书借阅管理系统前端开发，使用vue3框架
+> 
+> **这是对应的[后端项目地址](https://github.com/caolib/java_design)**
 
 ## 快速使用
 
