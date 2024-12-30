@@ -66,3 +66,5 @@ npm run dev
 - `main.js`：入口文件，app的初始化
 - `package.json`：项目的各种依赖，执行脚本等
 - `vite.config.js`：项目配置文件
+
+![image](https://github.com/user-attachments/assets/5f309b3a-f6cc-4cd1-90e5-29927150b2bf)
